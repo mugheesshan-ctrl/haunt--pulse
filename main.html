@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HAUNT PULSE</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#000;
+overflow-y:auto;
+overflow-x:hidden;
+
+height:100vh;
+}
+
+.bg{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+object-fit:cover;
+z-index:-2;
+}
+
+.overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.45);
+z-index:-1;
+}
+
+.container{
+height:100vh;
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+
+.logo{
+margin-top:55px;
+font-family:'Creepster', cursive;
+font-size:60px;
+font-weight:normal;
+letter-spacing:6px;
+
+color:#ffffff;
+
+text-shadow:
+0 0 8px red,
+0 0 20px red,
+0 0 40px crimson,
+0 0 70px red;
+
+animation:glow 2.5s ease-in-out infinite alternate;
+}
+
+
+.tagline{
+margin-top:10px;
+font-size:18px;
+letter-spacing:3px;
+color:#ddd;
+}
+
+@keyframes glow{
+
+0%{
+
+text-shadow:
+0 0 3px #ff0000,
+0 0 10px #8b0000,
+0 0 20px #550000;
+
+opacity:.92;
+
+}
+
+50%{
+
+text-shadow:
+0 0 8px #ff0000,
+0 0 25px crimson,
+0 0 45px darkred,
+0 0 70px #ff0000;
+
+opacity:1;
+
+}
+
+100%{
+
+text-shadow:
+0 0 5px #ff0000,
+0 0 18px #b30000,
+0 0 35px #660000;
+
+opacity:.95;
+
+}
+
+}
+}
+
+</style>
+
+</head>
+
+<body>
+
+<img src="home-bg.png" class="bg">
+
+<div class="overlay"></div>
+
+<div class="container">
+
+<h1 class="logo">HAUNT PULSE</h1>
+
+<p class="tagline">
+Create Fear. Edit Reality.
+</p>
+<div class="menu">
+
+<div class="eye-box">
+<div class="eye"></div>
+<div class="eye"></div>
+</div>
+
+<button class="btn">📷 EDIT PHOTO</button>
+
+<button class="btn">🎥 EDIT VIDEO</button>
+
+<button class="btn">✨ AI EFFECTS</button>
+
+<button class="btn">📁 MY PROJECTS</button>
+
+<button class="btn">⚙ SETTINGS</button>
+
+</div>
+
+<div class="fog"></div>
+
+</div>
+
+<style>
+
+.menu{
+margin-top:40px;
+width:90%;
+max-width:390px;
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+
+.eye-box{
+display:flex;
+justify-content:center;
+gap:90px;
+margin-bottom:35px;
+}
+
+.eye{
+    width:100px;
+    height:50px;
+    background:#ff0000;
+    border-radius:50%;
+    box-shadow:
+    0 0 20px red,
+    0 0 50px red,
+    0 0 80px crimson;
+    animation:blink 3s infinite;
+}
+    
+
+@keyframes blink{
+
+0%,90%,100%{
+transform:scaleY(1);
+}
+
+95%{
+transform:scaleY(.1);
+}
+
+}
+
+.btn{
+
+width:100%;
+height:65px;
+
+margin-bottom:20px;
+
+border:none;
+
+outline:none;
+
+cursor:pointer;
+
+border-radius:18px;
+
+font-size:22px;
+
+font-weight:bold;
+
+letter-spacing:2px;
+
+color:#fff;
+
+background:rgba(0,0,0,.35);
+
+border:1px solid rgba(255,0,0,.5);
+
+backdrop-filter:blur(15px);
+-webkit-backdrop-filter:blur(15px);
+
+box-shadow:
+0 0 15px rgba(255,0,0,.35),
+inset 0 0 15px rgba(255,255,255,.05);
+
+transition:.35s;
+
+}
+
+.btn:hover{
+
+transform:translateY(-4px);
+
+background:rgba(20,0,0,.75);
+
+color:#fff;
+
+border:1px solid red;
+
+box-shadow:
+0 0 25px red,
+0 0 50px red,
+0 0 80px red;
+
+}
+
+
+
+
+.fog{
+position:fixed;
+
+bottom:-20px;
+left:-40%;
+
+width:180%;
+height:140px;
+
+background:
+radial-gradient(circle,
+rgba(255,255,255,.08),
+transparent 65%);
+
+filter:blur(30px);
+
+opacity:.45;
+
+pointer-events:none;
+
+animation:fogMove 20s ease-in-out infinite alternate;
+
+z-index:1;
+}
+
+}
+
+@keyframes fogMove{
+
+0%{
+transform:translateX(0);
+}
+
+100%{
+transform:translateX(-12%);
+}
+
+}
+
+</style>background:rgba(0,0,0,.35);
+
+color:#fff;
+
+border:1px solid rgba(255,0,0,.5);
+
+backdrop-filter:blur(15px);
+
+-webkit-backdrop-filter:blur(15px);
+
+box-shadow:
+0 0 15px rgba(255,0,0,.35),
+inset 0 0 15px rgb

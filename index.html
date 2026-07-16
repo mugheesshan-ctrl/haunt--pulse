@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+margin:0;
+background:#000;
+overflow:hidden;
+}
+
+.page-img{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+object-fit:cover;
+display:none;
+cursor:pointer;
+}
+
+#start-img{
+display:block;
+z-index:5;
+}
+
+#poster-img{
+z-index:4;
+}
+
+#skeleton-img{
+z-index:2;
+}
+
+@keyframes smoothFlicker{
+0%,100%{
+opacity:1;
+filter:brightness(1);
+}
+50%{
+opacity:.7;
+filter:brightness(.8);
+}
+}
+
+.flicker-effect{
+animation:smoothFlicker .5s infinite;
+}
+
+/* ---------- BLINKING EYES ---------- */
+
+.eyes{
+position:absolute;
+left:50%;
+top:39%;
+transform:translate(-50%,-50%);
+width:180px;
+height:40px;
+display:none;
+z-index:3;
+pointer-events:none;
+}
+
+.eye{
+position:absolute;
+width:18px;
+height:18px;
+background:#ff0000;
+border-radius:50%;
+box-shadow:
+0 0 8px red,
+0 0 18px red,
+0 0 30px crimson;
+animation:blink 3s infinite,glow 1s infinite alternate;
+}
+
+.left-eye{
+left:28px;
+}
+
+.right-eye{
+right:28px;
+}
+
+@keyframes blink{
+
+0%,88%,100%{
+transform:scaleY(1);
+opacity:1;
+}
+
+90%{
+transform:scaleY(.1);
+opacity:.5;
+}
+
+92%{
+transform:scaleY(1);
+opacity:1;
+}
+
+}
+
+@keyframes glow{
+
+from{
+filter:brightness(.6);
+}
+
+to{
+filter:brightness(1.8);
+}
+
+}
+
+video{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+object-fit:cover;
+display:none;
+z-index:6;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<img id="start-img"
+src="start.png"
+class="page-img"
+onclick="startSequence()">
+
+<img id="poster-img"
+src="AFTER POSTER.png"
+class="page-img flicker-effect">
+
+<img id="skeleton-img"
+src="scary_house.png"
+class="page-img">
+
+<div class="eyes" id="eyes">
+
+<div class="eye left-eye"></div>
+
+<div class="eye right-eye"></div>
+
+</div>
+
+<video id="v1" src="video1.mp4"></video>
+
+<video id="v2" src="video2.mp4"></video>
+
+<script>
+
+const introMusic=new Audio("intro-music.mp3");
+
+function startSequence(){
+
+introMusic.play();
+
+document.getElementById("start-img").style.display="none";
+
+document.getElementById("poster-img").style.display="block";
+
+setTimeout(()=>{
+
+document.getElementById("poster-img").style.display="none";
+
+document.getElementById("skeleton-img").style.display="block";
+
+document.getElementById("eyes").style.display="block";
+
+},3000);
+
+setTimeout(()=>{
+
+document.getElementById("eyes").style.display="none";
+
+document.getElementById("skeleton-img").style.display="none";
+
+startVideos();
+
+},6000);
+
+}
+
+function startVideos(){
+
+const v1=document.getElementById("v1");
+
+const v2=document.getElementById("v2");
+
+v1.style.display="block";
+
+v1.play();
+
+v1.onended=function(){
+
+v1.style.display="none";
+
+v2.style.display="block";
+
+v2.play();
+
+}
+
+v2.onended=function(){
+
+window.location.href="main.html";
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
