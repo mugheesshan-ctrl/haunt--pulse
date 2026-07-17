@@ -1,227 +1,268 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-
-body{
-margin:0;
-background:#000;
-overflow:hidden;
-}
-
-.page-img{
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-object-fit:cover;
-display:none;
-cursor:pointer;
-}
-
-#start-img{
-display:block;
-z-index:5;
-}
-
-#poster-img{
-z-index:4;
-}
-
-#skeleton-img{
-z-index:2;
-}
-
-@keyframes smoothFlicker{
-0%,100%{
-opacity:1;
-filter:brightness(1);
-}
-50%{
-opacity:.7;
-filter:brightness(.8);
-}
-}
-
-.flicker-effect{
-animation:smoothFlicker .5s infinite;
-}
-
-/* ---------- BLINKING EYES ---------- */
-
-.eyes{
-position:absolute;
-left:50%;
-top:39%;
-transform:translate(-50%,-50%);
-width:180px;
-height:40px;
-display:none;
-z-index:3;
-pointer-events:none;
-}
-
-.eye{
-position:absolute;
-width:18px;
-height:18px;
-background:#ff0000;
-border-radius:50%;
-box-shadow:
-0 0 8px red,
-0 0 18px red,
-0 0 30px crimson;
-animation:blink 3s infinite,glow 1s infinite alternate;
-}
-
-.left-eye{
-left:28px;
-}
-
-.right-eye{
-right:28px;
-}
-
-@keyframes blink{
-
-0%,88%,100%{
-transform:scaleY(1);
-opacity:1;
-}
-
-90%{
-transform:scaleY(.1);
-opacity:.5;
-}
-
-92%{
-transform:scaleY(1);
-opacity:1;
-}
-
-}
-
-@keyframes glow{
-
-from{
-filter:brightness(.6);
-}
-
-to{
-filter:brightness(1.8);
-}
-
-}
-
-video{
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-object-fit:cover;
-display:none;
-z-index:6;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haunt - 3D Horror Video Editor</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<img id="start-img"
-src="start.png"
-class="page-img"
-onclick="startSequence()">
+<!-- ANIMATED FOG BACKGROUND -->
+<div class="fog-container">
+    <div class="fog fog-1"></div>
+    <div class="fog fog-2"></div>
+    <div class="fog fog-3"></div>
+</div>
 
-<img id="poster-img"
-src="AFTER POSTER.png"
-class="page-img flicker-effect">
+<!-- HEADER -->
+<header class="header">
+    <div class="header-content">
+        <div class="logo-section">
+            <h1 class="logo">🔴 HAUNT PULSE</h1>
+            <span class="tagline">3D Horror Video Editor</span>
+        </div>
+        <nav class="nav">
+            <button class="nav-btn" onclick="showTab('editor')">Editor</button>
+            <button class="nav-btn" onclick="showTab('library')">Library</button>
+            <button class="nav-btn" onclick="showTab('effects')">Effects</button>
+            <button class="nav-btn" onclick="showTab('export')">Export</button>
+        </nav>
+    </div>
+</header>
 
-<img id="skeleton-img"
-src="scary_house.png"
-class="page-img">
+<!-- MAIN CONTAINER -->
+<div class="main-container">
+    
+    <!-- SIDEBAR LEFT -->
+    <aside class="sidebar sidebar-left">
+        <div class="panel glass-panel">
+            <h3 class="panel-title">Project</h3>
+            <div class="project-info">
+                <input type="text" placeholder="Project Name" class="input-field" value="Horror Project">
+                <select class="input-field">
+                    <option>Resolution: 1080p</option>
+                    <option>Resolution: 4K</option>
+                    <option>Resolution: 720p</option>
+                </select>
+            </div>
+        </div>
 
-<div class="eyes" id="eyes">
+        <div class="panel glass-panel">
+            <h3 class="panel-title">Quick Access</h3>
+            <div class="quick-access">
+                <button class="quick-btn" onclick="importMedia()">📁 Import Media</button>
+                <button class="quick-btn" onclick="addEffect()">✨ Add Effect</button>
+                <button class="quick-btn" onclick="addTransition()">🌫️ Add Transition</button>
+            </div>
+        </div>
 
-<div class="eye left-eye"></div>
+        <div class="panel glass-panel">
+            <h3 class="panel-title">Assets Library</h3>
+            <div class="asset-list">
+                <div class="asset-item" onclick="selectAsset(this)">
+                    <img src="start.png" alt="Start Screen">
+                    <span>Start Screen</span>
+                </div>
+                <div class="asset-item" onclick="selectAsset(this)">
+                    <img src="AFTER POSTER.png" alt="Poster">
+                    <span>Poster</span>
+                </div>
+                <div class="asset-item" onclick="selectAsset(this)">
+                    <img src="scary_house.png" alt="House">
+                    <span>House</span>
+                </div>
+            </div>
+        </div>
+    </aside>
 
-<div class="eye right-eye"></div>
+    <!-- CENTER WORKSPACE -->
+    <main class="workspace">
+        
+        <!-- VIDEO PREVIEW -->
+        <div class="preview-container glass-panel">
+            <div class="preview-header">
+                <h3>Video Preview</h3>
+                <div class="preview-controls">
+                    <button class="preview-btn" onclick="toggleFullscreen()">⛶</button>
+                    <button class="preview-btn" onclick="resetPreview()">🔄</button>
+                </div>
+            </div>
+            <div class="video-display">
+                <img id="preview-img" src="start.png" class="preview-media" alt="Preview">
+                <video id="preview-video" class="preview-media" style="display:none;"></video>
+                <div class="blinking-eyes" id="preview-eyes">
+                    <div class="eye eye-left"></div>
+                    <div class="eye eye-right"></div>
+                </div>
+                <div class="preview-overlay">
+                    <button class="play-btn" onclick="togglePreviewPlay()">▶</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TIMELINE SECTION -->
+        <div class="timeline-container glass-panel">
+            <div class="timeline-header">
+                <h3>Timeline</h3>
+                <div class="timeline-controls">
+                    <button class="timeline-btn" onclick="zoomTimelineIn()">🔍+</button>
+                    <button class="timeline-btn" onclick="zoomTimelineOut()">🔍-</button>
+                    <button class="timeline-btn" onclick="fitTimeline()">Fit</button>
+                </div>
+            </div>
+            
+            <div class="timeline-content">
+                <div class="timeline-ruler"></div>
+                <div class="timeline-tracks">
+                    
+                    <!-- Video Track 1 -->
+                    <div class="track">
+                        <div class="track-label">Video 1</div>
+                        <div class="track-content">
+                            <div class="clip video-clip" draggable="true" onclick="selectClip(this)">
+                                <span class="clip-label">start.png</span>
+                                <span class="clip-duration">3s</span>
+                            </div>
+                            <div class="clip video-clip" draggable="true" onclick="selectClip(this)">
+                                <span class="clip-label">AFTER POSTER.png</span>
+                                <span class="clip-duration">3s</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Video Track 2 -->
+                    <div class="track">
+                        <div class="track-label">Video 2</div>
+                        <div class="track-content">
+                            <div class="clip video-clip" draggable="true" onclick="selectClip(this)">
+                                <span class="clip-label">scary_house.png</span>
+                                <span class="clip-duration">3s</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Audio Track -->
+                    <div class="track audio-track">
+                        <div class="track-label">Audio</div>
+                        <div class="track-content">
+                            <div class="clip audio-clip" draggable="true" onclick="selectClip(this)">
+                                <span class="clip-label">intro-music.mp3</span>
+                                <span class="clip-duration">9s</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="timeline-playhead"></div>
+            </div>
+
+            <div class="timeline-footer">
+                <div class="time-display">
+                    <span id="current-time">00:00</span> / <span id="total-time">00:09</span>
+                </div>
+                <div class="timeline-playback">
+                    <button class="play-btn-timeline" onclick="playTimeline()">▶</button>
+                    <button class="play-btn-timeline" onclick="pauseTimeline()">⏸</button>
+                    <button class="play-btn-timeline" onclick="stopTimeline()">⏹</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- SIDEBAR RIGHT -->
+    <aside class="sidebar sidebar-right">
+        
+        <!-- PROPERTIES PANEL -->
+        <div class="panel glass-panel">
+            <h3 class="panel-title">Properties</h3>
+            <div class="properties-content" id="properties-content">
+                <p class="info-text">Select a clip to edit properties</p>
+            </div>
+        </div>
+
+        <!-- EFFECTS PANEL -->
+        <div class="panel glass-panel">
+            <h3 class="panel-title">Effects</h3>
+            <div class="effects-list">
+                <button class="effect-btn" onclick="applyEffect('glow')">🌟 Glow</button>
+                <button class="effect-btn" onclick="applyEffect('blur')">💨 Blur</button>
+                <button class="effect-btn" onclick="applyEffect('fog')">🌫️ Fog</button>
+                <button class="effect-btn" onclick="applyEffect('glitch')">⚡ Glitch</button>
+                <button class="effect-btn" onclick="applyEffect('blood')">🩸 Blood</button>
+                <button class="effect-btn" onclick="applyEffect('grayscale')">⚪ Grayscale</button>
+            </div>
+        </div>
+
+        <!-- TRANSITIONS PANEL -->
+        <div class="panel glass-panel">
+            <h3 class="panel-title">Transitions</h3>
+            <div class="transitions-list">
+                <button class="transition-btn" onclick="applyTransition('fade')">Fade</button>
+                <button class="transition-btn" onclick="applyTransition('wipe')">Wipe</button>
+                <button class="transition-btn" onclick="applyTransition('dissolve')">Dissolve</button>
+                <button class="transition-btn" onclick="applyTransition('blood-splat')">Splat</button>
+            </div>
+        </div>
+
+        <!-- EXPORT PANEL -->
+        <div class="panel glass-panel">
+            <h3 class="panel-title">Export</h3>
+            <div class="export-options">
+                <button class="export-btn primary-btn" onclick="exportProject()">📤 Export Video</button>
+                <button class="export-btn" onclick="exportPreset()">💾 Save Preset</button>
+            </div>
+        </div>
+    </aside>
 
 </div>
 
-<video id="v1" src="video1.mp4"></video>
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-content">
+        <span class="status-indicator">● Online</span>
+        <span class="status-text">Ready to Create Horror</span>
+        <span class="version">v1.0.0</span>
+    </div>
+</footer>
 
-<video id="v2" src="video2.mp4"></video>
+<!-- MODALS -->
+<div class="modal" id="export-modal">
+    <div class="modal-content glass-panel">
+        <div class="modal-header">
+            <h2>Export Project</h2>
+            <button class="close-btn" onclick="closeModal('export-modal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Filename:</label>
+                <input type="text" value="horror-project.mp4" class="input-field">
+            </div>
+            <div class="form-group">
+                <label>Quality:</label>
+                <select class="input-field">
+                    <option>4K (2160p) - High</option>
+                    <option selected>1080p - Standard</option>
+                    <option>720p - Fast</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Format:</label>
+                <select class="input-field">
+                    <option>MP4</option>
+                    <option>WebM</option>
+                    <option>MOV</option>
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn secondary-btn" onclick="closeModal('export-modal')">Cancel</button>
+            <button class="btn primary-btn" onclick="confirmExport()">Export</button>
+        </div>
+    </div>
+</div>
 
-<script>
-
-const introMusic=new Audio("intro-music.mp3");
-
-function startSequence(){
-
-introMusic.play();
-
-document.getElementById("start-img").style.display="none";
-
-document.getElementById("poster-img").style.display="block";
-
-setTimeout(()=>{
-
-document.getElementById("poster-img").style.display="none";
-
-document.getElementById("skeleton-img").style.display="block";
-
-document.getElementById("eyes").style.display="block";
-
-},3000);
-
-setTimeout(()=>{
-
-document.getElementById("eyes").style.display="none";
-
-document.getElementById("skeleton-img").style.display="none";
-
-startVideos();
-
-},6000);
-
-}
-
-function startVideos(){
-
-const v1=document.getElementById("v1");
-
-const v2=document.getElementById("v2");
-
-v1.style.display="block";
-
-v1.play();
-
-v1.onended=function(){
-
-v1.style.display="none";
-
-v2.style.display="block";
-
-v2.play();
-
-}
-
-v2.onended=function(){
-
-window.location.href="main.html";
-
-}
-
-}
-
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
